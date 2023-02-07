@@ -40,7 +40,7 @@ variable "sku" {
 variable "storage_image_version" {
   type        = string
   description = "Specifies the version of the image used to create the virtual machine. Changing this forces a new resource to be created."
-  default     = "latest"
+  # default     = "latest"
 }
 
 
