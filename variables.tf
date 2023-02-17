@@ -116,12 +116,6 @@ variable "timezone" {
   default     = "India Standard Time"
 }
 
-# variable "provision_vm_agent" {
-#   type        = bool
-#   description = "Should the Azure Virtual Machine Guest Agent be installed on this Virtual Machine? Defaults to false"
-#   default     = true
-# }
-
 variable "delete_os_disk_on_termination" {
   type        = bool
   description = " Should the OS Disk (either the Managed Disk / VHD Blob) be deleted when the Virtual Machine is destroyed? Defaults to false."
@@ -132,4 +126,24 @@ variable "delete_data_disks_on_termination" {
   type        = bool
   description = "Should the Data Disks (either the Managed Disks / VHD Blobs) be deleted when the Virtual Machine is destroyed? Defaults to false."
   default     = true
+}
+
+variable "nsg_name" {
+  type        = string
+  description = "name of the azurerm_network_security_group"
+}
+
+variable "nsg_rules" {
+  type = list(object({
+    name                       = string
+    priority                   = number
+    direction                  = string
+    access                     = string
+    protocol                   = string
+    source_port_range          = string
+    destination_port_range     = string
+    source_address_prefix      = string
+    destination_address_prefix = string
+  }))
+  description = "values for each NSG rule"
 }
