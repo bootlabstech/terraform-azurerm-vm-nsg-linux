@@ -42,7 +42,7 @@ resource "azurerm_virtual_machine" "virtual_machine" {
       timezone = var.timezone
       #provision_vm_agent = var.provision_vm_agent
     }
-    provision_vm_agent  = true
+    
   }
 
   lifecycle {
