@@ -40,7 +40,7 @@ resource "azurerm_virtual_machine" "virtual_machine" {
     for_each = var.os_type == "Windows" ? [1] : []
     content {
       timezone = var.timezone
-      #provision_vm_agent = var.provision_vm_agent
+      provision_vm_agent = true
     }
     
   }
@@ -65,24 +65,56 @@ resource "azurerm_network_interface" "network_interface" {
   }
 }
 
-
 resource "azurerm_network_security_group" "nsg" {
-  name                = var.nsg_name
-  location            = var.location
-  resource_group_name = var.resource_group_name
+  name                = "${var.name}-nsg"
+  location            = azurerm_virtual_machine.virtual_machine.location
+  resource_group_name = azurerm_virtual_machine.virtual_machine.resource_group_name
+}
 
-  dynamic "security_rule" {
-    for_each = var.nsg_rules
-    content {
-      name                       = security_rule.value["name"]
-      priority                   = security_rule.value["priority"]
-      direction                  = security_rule.value["direction"]
-      access                     = security_rule.value["access"]
-      protocol                   = security_rule.value["protocol"]
-      source_port_range          = security_rule.value["source_port_range"]
-      destination_port_range     = security_rule.value["destination_port_range"]
-      source_address_prefix      = security_rule.value["source_address_prefix"]
-      destination_address_prefix = security_rule.value["destination_address_prefix"]
-    }
-  }
+resource "azurerm_network_security_rule" "nsg_rules" {
+  for_each                    = var.nsg_rules
+  name                        = each.value.name
+  priority                    = each.value.priority
+  direction                   = each.value.direction
+  access                      = each.value.access
+  protocol                    = each.value.protocol
+  source_address_prefix       = each.value.source_address_prefix
+  source_port_range           = each.value.source_port_range
+  destination_address_prefix  = each.value.destination_address_prefix
+  destination_port_range      = each.value.destination_port_range
+  network_security_group_name = azurerm_network_security_group.nsg.name
+  resource_group_name         = azurerm_virtual_machine.virtual_machine.resource_group_name
+}
+
+resource "azurerm_network_interface_security_group_association" "security_group_association" {
+  network_interface_id      = azurerm_network_interface.network_interface.id
+  network_security_group_id = azurerm_network_security_group.nsg.id
+}
+
+
+
+
+
+
+
+# Getting existing recovery_services_vault to add vm as a backup item 
+data "azurerm_recovery_services_vault" "services_vault" {
+  name                = var.recovery_services_vault_name
+  resource_group_name = var.services_vault_resource_group_name
+}
+
+data "azurerm_backup_policy_vm" "policy" {
+  name                = var.policy_name
+  recovery_vault_name = data.azurerm_recovery_services_vault.services_vault.name
+  resource_group_name = data.azurerm_recovery_services_vault.services_vault.resource_group_name
+}
+resource "azurerm_backup_protected_vm" "backup_protected_vm" {
+  resource_group_name = var.resource_group_name
+  recovery_vault_name = data.azurerm_recovery_services_vault.services_vault.name
+  source_vm_id        = azurerm_virtual_machine.virtual_machine.id
+  backup_policy_id    = data.azurerm_backup_policy_vm.policy.id
+  depends_on = [
+    azurerm_virtual_machine.virtual_machine,
+    azurerm_backup_policy_vm.backup_policy_vm
+  ]
 }

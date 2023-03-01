@@ -134,16 +134,43 @@ variable "nsg_name" {
 }
 
 variable "nsg_rules" {
-  type = list(object({
+  type = map(object({
     name                       = string
     priority                   = number
     direction                  = string
     access                     = string
     protocol                   = string
-    source_port_range          = string
-    destination_port_range     = string
     source_address_prefix      = string
+    source_port_range          = string
     destination_address_prefix = string
+    destination_port_range     = string
   }))
-  description = "values for each NSG rule"
+  default = {
+    "https" = {
+      access                     = "Allow"
+      destination_address_prefix = "*"
+      destination_port_range     = "443"
+      direction                  = "Inbound"
+      name                       = "allow-https"
+      priority                   = 100
+      protocol                   = "Tcp"
+      source_address_prefix      = "*"
+      source_port_range          = "*"
+    }
+  }
 }
+
+variable "recovery_services_vault_name" {
+  type        = string
+  description = "name of the azurerm_network_security_group"
+}
+variable "services_vault_resource_group_name" {
+  type        = string
+  description = "name of the azurerm_network_security_group"
+}
+
+variable "policy_name" {
+  type        = string
+  description = "name of the azurerm_network_security_group"
+}
+
