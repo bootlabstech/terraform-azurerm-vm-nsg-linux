@@ -131,10 +131,10 @@ variable "delete_data_disks_on_termination" {
   default     = true
 }
 
-variable "nsg_name" {
-  type        = string
-  description = "name of the azurerm_network_security_group"
-}
+# variable "nsg_name" {
+#   type        = string
+#   description = "name of the azurerm_network_security_group"
+# }
 
 variable "nsg_rules" {
   type = map(object({
