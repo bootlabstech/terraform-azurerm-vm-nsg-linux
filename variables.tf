@@ -60,11 +60,13 @@ variable "create_option" {
 variable "managed_disk_type" {
   type        = string
   description = "Specifies the type of managed disk to create. Possible values are either Standard_LRS, StandardSSD_LRS, Premium_LRS or UltraSSD_LRS."
+  default = "Standard_LRS"
 }
 
 variable "os_type" {
   type        = string
   description = "Specifies the Operating System on the OS Disk. Possible values are Linux and Windows."
+  default = "Linux"
 }
 
 # os_profile
@@ -83,10 +85,10 @@ variable "custom_data" {
   description = "Specifies custom data to supply to the machine. On Linux-based systems, this can be used as a cloud-init script."
 }
 # network_interface
-variable "network_interface_name" {
-  type        = string
-  description = "The name of the Network Interface. Changing this forces a new resource to be created."
-}
+# variable "network_interface_name" {
+#   type        = string
+#   description = "The name of the Network Interface. Changing this forces a new resource to be created."
+# }
 
 variable "ip_name" {
   type        = string
@@ -102,6 +104,7 @@ variable "subnet_id" {
 variable "private_ip_address_allocation" {
   type        = string
   description = "The allocation method used for the Private IP Address. Possible values are Dynamic and Static"
+  default = "Dynamic"
 }
 
 variable "disable_password_authentication" {
@@ -169,8 +172,8 @@ variable "services_vault_resource_group_name" {
   description = "name of the azurerm_network_security_group"
 }
 
-variable "policy_name" {
-  type        = string
-  description = "name of the azurerm_network_security_group"
-}
+# variable "policy_name" {
+#   type        = string
+#   description = "name of the azurerm_network_security_group"
+# }
 
