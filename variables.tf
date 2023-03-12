@@ -25,6 +25,7 @@ variable "vm_size" {
 variable "publisher" {
   type        = string
   description = " Specifies the publisher of the image used to create the virtual machine. Examples: Canonical, MicrosoftWindowsServer"
+  default = "Canonical"
 }
 
 variable "offer" {
