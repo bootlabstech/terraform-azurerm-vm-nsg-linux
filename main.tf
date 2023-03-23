@@ -55,7 +55,7 @@ resource "azurerm_virtual_machine" "virtual_machine" {
   ]
 }
 resource "azurerm_network_interface" "network_interface" {
-  name                = "{{.name}}-nic"
+  name                = "${var.name}-nic"
   location            = var.location
   resource_group_name = var.resource_group_name
   ip_configuration {
@@ -66,7 +66,7 @@ resource "azurerm_network_interface" "network_interface" {
 }
 
 resource "azurerm_network_security_group" "nsg" {
-  name                = "{{.name}}-nsg"
+  name                = "${var.name}-nsg"
   location            = azurerm_virtual_machine.virtual_machine.location
   resource_group_name = azurerm_virtual_machine.virtual_machine.resource_group_name
 }
@@ -104,7 +104,7 @@ data "azurerm_recovery_services_vault" "services_vault" {
 }
 
 data "azurerm_backup_policy_vm" "policy" {
-  name                = "{{.name}}-policy"
+  name                = "VM-backup-policy"
   recovery_vault_name = data.azurerm_recovery_services_vault.services_vault.name
   resource_group_name = data.azurerm_recovery_services_vault.services_vault.resource_group_name
 }
