@@ -109,7 +109,7 @@ data "azurerm_backup_policy_vm" "policy" {
   resource_group_name = data.azurerm_recovery_services_vault.services_vault.resource_group_name
 }
 resource "azurerm_backup_protected_vm" "backup_protected_vm" {
-  resource_group_name = var.resource_group_name
+  resource_group_name = data.azurerm_recovery_services_vault.services_vault.resource_group_name
   recovery_vault_name = data.azurerm_recovery_services_vault.services_vault.name
   source_vm_id        = azurerm_virtual_machine.virtual_machine.id
   backup_policy_id    = data.azurerm_backup_policy_vm.policy.id
