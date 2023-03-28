@@ -58,9 +58,9 @@ variable "create_option" {
   default     = "FromImage"
 }
 
-variable "managed_{{.name}}_type" {
+variable "managed_disk_type" {
   type        = string
-  description = "Specifies the type of managed {{.name}} to create. Possible values are either Standard_LRS, StandardSSD_LRS, Premium_LRS or UltraSSD_LRS."
+  description = "Specifies the type of managed disk to create. Possible values are either Standard_LRS, StandardSSD_LRS, Premium_LRS or UltraSSD_LRS."
   default = "Standard_LRS"
 }
 
@@ -120,13 +120,13 @@ variable "timezone" {
   default     = "India Standard Time"
 }
 
-variable "delete_os_{{.name}}_on_termination" {
+variable "delete_os_disk_on_termination" {
   type        = bool
   description = " Should the OS {{.name}} (either the Managed {{.name}} / VHD Blob) be deleted when the Virtual Machine is destroyed? Defaults to false."
   default     = true
 }
 
-variable "delete_data_{{.name}}s_on_termination" {
+variable "delete_data_disks_on_termination" {
   type        = bool
   description = "Should the Data {{.name}}s (either the Managed {{.name}}s / VHD Blobs) be deleted when the Virtual Machine is destroyed? Defaults to false."
   default     = true
