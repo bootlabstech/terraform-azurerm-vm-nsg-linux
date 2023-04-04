@@ -21,28 +21,28 @@ variable "vm_size" {
   description = "Specifies the size of the Virtual Machine. See also Azure VM Naming Conventions."
 }
 
-# storage_image_reference
-variable "publisher" {
-  type        = string
-  description = " Specifies the publisher of the image used to create the virtual machine. Examples: Canonical, MicrosoftWindowsServer"
-  default = "Canonical"
-}
+# # storage_image_reference
+# variable "publisher" {
+#   type        = string
+#   description = " Specifies the publisher of the image used to create the virtual machine. Examples: Canonical, MicrosoftWindowsServer"
+#   default = "Canonical"
+# }
 
-variable "offer" {
-  type        = string
-  description = "Specifies the offer of the image used to create the virtual machine. Examples: UbuntuServer, WindowsServer"
-}
+# variable "offer" {
+#   type        = string
+#   description = "Specifies the offer of the image used to create the virtual machine. Examples: UbuntuServer, WindowsServer"
+# }
 
-variable "sku" {
-  type        = string
-  description = "Specifies the SKU of the image used to create the virtual machine. Examples: 18.04-LTS, 2019-Datacenter"
-}
+# variable "sku" {
+#   type        = string
+#   description = "Specifies the SKU of the image used to create the virtual machine. Examples: 18.04-LTS, 2019-Datacenter"
+# }
 
-variable "storage_image_version" {
-  type        = string
-  description = "Specifies the version of the image used to create the virtual machine. Changing this forces a new resource to be created."
-  # default     = "latest"
-}
+# variable "storage_image_version" {
+#   type        = string
+#   description = "Specifies the version of the image used to create the virtual machine. Changing this forces a new resource to be created."
+#   # default     = "latest"
+# }
 
 
 # storage_os_{{.name}}
