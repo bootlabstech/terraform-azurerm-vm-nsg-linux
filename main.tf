@@ -7,12 +7,16 @@ resource "azurerm_virtual_machine" "virtual_machine" {
   delete_os_disk_on_termination    = var.delete_os_disk_on_termination
   delete_data_disks_on_termination = var.delete_data_disks_on_termination
 
-  storage_image_reference {
-    publisher = var.publisher
-    offer     = var.offer
-    sku       = var.sku
-    version   = var.storage_image_version
-  }
+  # storage_image_reference {
+  #   publisher = var.publisher
+  #   offer     = var.offer
+  #   sku       = var.sku
+  #   version   = var.storage_image_version
+  # }
+
+    os_profile_windows_config {
+    provision_vm_agent = "true"
+   }
 
   storage_os_disk {
     name              = "${var.name}-disk"
@@ -30,21 +34,21 @@ resource "azurerm_virtual_machine" "virtual_machine" {
   #   custom_data    = var.custom_data
   # }
 
-  dynamic "os_profile_linux_config" {
-    for_each = var.os_type == "Linux" ? [1] : []
-    content {
-      disable_password_authentication = var.disable_password_authentication
-    }
-  }
+  # dynamic "os_profile_linux_config" {
+  #   for_each = var.os_type == "Linux" ? [1] : []
+  #   content {
+  #     disable_password_authentication = var.disable_password_authentication
+  #   }
+  # }
 
-  dynamic "os_profile_windows_config" {
-    for_each = var.os_type == "Windows" ? [1] : []
-    content {
-      timezone = var.timezone
-      provision_vm_agent = true
-    }
+  # dynamic "os_profile_windows_config" {
+  #   for_each = var.os_type == "Windows" ? [1] : []
+  #   content {
+  #     timezone = var.timezone
+  #     provision_vm_agent = true
+  #   }
     
-  }
+  # }
 
   lifecycle {
     ignore_changes = [
