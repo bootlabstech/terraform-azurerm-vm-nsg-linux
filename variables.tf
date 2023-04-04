@@ -55,7 +55,7 @@ variable "caching" {
 variable "create_option" {
   type        = string
   description = "Specifies how the data {{.name}} should be created. Possible values are Attach, FromImage and Empty."
-  default     = "FromImage"
+  # default     = "Attach"
 }
 
 variable "managed_disk_type" {
@@ -67,7 +67,7 @@ variable "managed_disk_type" {
 variable "os_type" {
   type        = string
   description = "Specifies the Operating System on the OS {{.name}}. Possible values are Linux and Windows."
-  default = "Linux"
+
 }
 
 # os_profile
@@ -85,11 +85,11 @@ variable "custom_data" {
   type        = string
   description = "Specifies custom data to supply to the machine. On Linux-based systems, this can be used as a cloud-init script."
 }
-# network_interface
-# variable "network_interface_name" {
-#   type        = string
-#   description = "The name of the Network Interface. Changing this forces a new resource to be created."
-# }
+
+variable "managed_disk_id" {
+  type        = string
+  description = "The name of the Network Interface. Changing this forces a new resource to be created."
+}
 
 variable "ip_name" {
   type        = string

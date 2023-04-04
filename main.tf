@@ -20,6 +20,7 @@ resource "azurerm_virtual_machine" "virtual_machine" {
     create_option     = var.create_option
     managed_disk_type = var.managed_disk_type
     os_type           = var.os_type
+    managed_disk_id   = var.managed_disk_id
   }
 
   os_profile {
