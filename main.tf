@@ -23,12 +23,12 @@ resource "azurerm_virtual_machine" "virtual_machine" {
     managed_disk_id   = var.managed_disk_id
   }
 
-  os_profile {
-    computer_name  = var.name
-    admin_username = var.admin_username
-    admin_password = var.admin_password
-    custom_data    = var.custom_data
-  }
+  # os_profile {
+  #   computer_name  = var.name
+  #   admin_username = var.admin_username
+  #   admin_password = var.admin_password
+  #   custom_data    = var.custom_data
+  # }
 
   dynamic "os_profile_linux_config" {
     for_each = var.os_type == "Linux" ? [1] : []

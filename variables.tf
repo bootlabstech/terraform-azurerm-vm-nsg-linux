@@ -71,20 +71,20 @@ variable "os_type" {
 }
 
 # os_profile
-variable "admin_username" {
-  type        = string
-  description = "Specifies the name of the local administrator account."
-}
+# variable "admin_username" {
+#   type        = string
+#   description = "Specifies the name of the local administrator account."
+# }
 
-variable "admin_password" {
-  type        = string
-  description = "The password associated with the local administrator account."
-}
+# variable "admin_password" {
+#   type        = string
+#   description = "The password associated with the local administrator account."
+# }
 
-variable "custom_data" {
-  type        = string
-  description = "Specifies custom data to supply to the machine. On Linux-based systems, this can be used as a cloud-init script."
-}
+# variable "custom_data" {
+#   type        = string
+#   description = "Specifies custom data to supply to the machine. On Linux-based systems, this can be used as a cloud-init script."
+# }
 
 variable "managed_disk_id" {
   type        = string
