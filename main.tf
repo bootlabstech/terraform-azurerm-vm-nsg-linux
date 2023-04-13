@@ -1,3 +1,4 @@
+# Creates a Virtual Machine
 resource "azurerm_virtual_machine" "virtual_machine" {
   name                             = var.name
   location                         = var.location
@@ -7,16 +8,12 @@ resource "azurerm_virtual_machine" "virtual_machine" {
   delete_os_disk_on_termination    = var.delete_os_disk_on_termination
   delete_data_disks_on_termination = var.delete_data_disks_on_termination
 
-  # storage_image_reference {
-  #   publisher = var.publisher
-  #   offer     = var.offer
-  #   sku       = var.sku
-  #   version   = var.storage_image_version
-  # }
-
-    os_profile_windows_config {
-    provision_vm_agent = "true"
-   }
+  storage_image_reference {
+    publisher = var.publisher
+    offer     = var.offer
+    sku       = var.sku
+    version   = var.storage_image_version
+  }
 
   storage_os_disk {
     name              = "${var.name}-disk"
@@ -24,31 +21,30 @@ resource "azurerm_virtual_machine" "virtual_machine" {
     create_option     = var.create_option
     managed_disk_type = var.managed_disk_type
     os_type           = var.os_type
-    managed_disk_id   = var.managed_disk_id
   }
 
-  # os_profile {
-  #   computer_name  = var.name
-  #   admin_username = var.admin_username
-  #   admin_password = var.admin_password
-  #   custom_data    = var.custom_data
-  # }
+  os_profile {
+    computer_name  = var.name
+    admin_username = var.admin_username
+    admin_password = var.admin_password
+    custom_data    = var.custom_data
+  }
 
-  # dynamic "os_profile_linux_config" {
-  #   for_each = var.os_type == "Linux" ? [1] : []
-  #   content {
-  #     disable_password_authentication = var.disable_password_authentication
-  #   }
-  # }
+  dynamic "os_profile_linux_config" {
+    for_each = var.os_type == "Linux" ? [1] : []
+    content {
+      disable_password_authentication = var.disable_password_authentication
+    }
+  }
 
-  # dynamic "os_profile_windows_config" {
-  #   for_each = var.os_type == "Windows" ? [1] : []
-  #   content {
-  #     timezone = var.timezone
-  #     provision_vm_agent = true
-  #   }
+  dynamic "os_profile_windows_config" {
+    for_each = var.os_type == "Windows" ? [1] : []
+    content {
+      timezone = var.timezone
+      provision_vm_agent = true
+    }
     
-  # }
+  }
 
   lifecycle {
     ignore_changes = [
@@ -59,6 +55,7 @@ resource "azurerm_virtual_machine" "virtual_machine" {
     azurerm_network_interface.network_interface
   ]
 }
+# Creates Network Interface Card with private IP for Virtual Machine
 resource "azurerm_network_interface" "network_interface" {
   name                = "${var.name}-nic"
   location            = var.location
@@ -69,12 +66,14 @@ resource "azurerm_network_interface" "network_interface" {
     private_ip_address_allocation = var.private_ip_address_allocation
   }
 }
+# Creates Network Security Group NSG for Virtual Machine
 
 resource "azurerm_network_security_group" "nsg" {
   name                = "${var.name}-nsg"
   location            = azurerm_virtual_machine.virtual_machine.location
   resource_group_name = azurerm_virtual_machine.virtual_machine.resource_group_name
 }
+# Creates Network Security Group Default Rules for Virtual Machine
 
 resource "azurerm_network_security_rule" "nsg_rules" {
   for_each                    = var.nsg_rules
@@ -90,29 +89,27 @@ resource "azurerm_network_security_rule" "nsg_rules" {
   network_security_group_name = azurerm_network_security_group.nsg.name
   resource_group_name         = azurerm_virtual_machine.virtual_machine.resource_group_name
 }
+# Creates association (i.e) adds NSG to the NIC
 
 resource "azurerm_network_interface_security_group_association" "security_group_association" {
   network_interface_id      = azurerm_network_interface.network_interface.id
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
-
-
-
-
-
-
 # Getting existing recovery_services_vault to add vm as a backup item 
 data "azurerm_recovery_services_vault" "services_vault" {
   name                = var.recovery_services_vault_name
   resource_group_name = var.services_vault_resource_group_name
 }
+# Getting existing Backup Policy for Virtual Machine
 
 data "azurerm_backup_policy_vm" "policy" {
   name                = "VM-backup-policy"
   recovery_vault_name = data.azurerm_recovery_services_vault.services_vault.name
   resource_group_name = data.azurerm_recovery_services_vault.services_vault.resource_group_name
 }
+# Creates Backup protected Virtual Machine
+
 resource "azurerm_backup_protected_vm" "backup_protected_vm" {
   resource_group_name = data.azurerm_recovery_services_vault.services_vault.resource_group_name
   recovery_vault_name = data.azurerm_recovery_services_vault.services_vault.name
