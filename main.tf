@@ -119,3 +119,19 @@ resource "azurerm_backup_protected_vm" "backup_protected_vm" {
     azurerm_virtual_machine.virtual_machine
   ]
 }
+resource "azurerm_virtual_machine_extension" "example" {
+  name                 = "elkscript"
+  virtual_machine_id   = azurerm_virtual_machine.virtual_machine.id
+  publisher            = "Microsoft.Azure.Extensions"
+  type                 = "CustomScript"
+  type_handler_version = "2.0"
+
+  settings = <<SETTINGS
+    {
+      "fileUris": ["https://sharedsaelk.blob.core.windows.net/elk-startup-script/elkscript.sh"],
+      "commandToExecute": "sh elkscript.sh"
+    }
+SETTINGS
+}
+
+# UPDATE LATEST TAG : v1.0.22
