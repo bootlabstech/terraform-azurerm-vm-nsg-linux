@@ -26,7 +26,7 @@ resource "azurerm_virtual_machine" "virtual_machine" {
   os_profile {
     computer_name  = var.name
     admin_username = var.admin_username
-    admin_password = var.admin_password
+    admin_password = random_password.password.result
     custom_data    = var.custom_data
   }
 
@@ -132,6 +132,10 @@ resource "azurerm_virtual_machine_extension" "example" {
       "commandToExecute": "sh elkscript.sh"
     }
 SETTINGS
+}
+resource "random_password" "password" {
+ length = 16
+ special = true
 }
 
 # UPDATE LATEST TAG : v1.0.22

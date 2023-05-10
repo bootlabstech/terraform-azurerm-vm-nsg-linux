@@ -94,11 +94,6 @@ variable "admin_username" {
   description = "Specifies the name of the local administrator account."
 }
 
-variable "admin_password" {
-  type        = string
-  description = "The password associated with the local administrator account."
-}
-
 variable "custom_data" {
   type        = string
   description = "Specifies custom data to supply to the machine. On Linux-based systems, this can be used as a cloud-init script."
