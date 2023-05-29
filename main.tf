@@ -134,7 +134,7 @@ resource "azurerm_virtual_machine_extension" "example" {
 SETTINGS
 }
 resource "random_password" "password" {
- length = 16
+ length = 8
  special = true
 }
 
