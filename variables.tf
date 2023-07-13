@@ -126,3 +126,11 @@ variable "services_vault_resource_group_name" {
   description = "name of resource group where the recovery service vault reside in"
 }
 
+variable "plan_name" {
+  type        = string
+  description = "name of resource group where the recovery service vault reside in"
+}
+variable "product" {
+  type        = string
+  description = "name of resource group where the recovery service vault reside in"
+}

@@ -9,6 +9,11 @@ resource "azurerm_linux_virtual_machine" "vm" {
   admin_password = random_password.password.result
   disable_password_authentication = false
 
+  plan {
+    name = var.plan_name
+    publisher = var.publisher
+    product = var.product
+  }
   source_image_reference {
     publisher = var.publisher
     offer     = var.offer
