@@ -1,19 +1,14 @@
 # Creates a Azure Linux Virtual machine
 resource "azurerm_linux_virtual_machine" "vm" {
-  name                             = var.name
-  location                         = var.location
-  resource_group_name              = var.resource_group_name
-  network_interface_ids            = [azurerm_network_interface.nic.id]
-  size                             = var.size
-  admin_username = var.admin_username
-  admin_password = random_password.password.result
+  name                            = var.name
+  resource_group_name             = var.resource_group_name
+  location                        = var.location
+  network_interface_ids           = [azurerm_network_interface.nic.id]
+  size                            = var.size
+  admin_username                  = var.admin_username
+  admin_password                  = random_password.password.result
   disable_password_authentication = false
 
-  plan {
-    name = var.plan_name
-    publisher = var.publisher
-    product = var.product
-  }
   source_image_reference {
     publisher = var.publisher
     offer     = var.offer
@@ -22,10 +17,10 @@ resource "azurerm_linux_virtual_machine" "vm" {
   }
 
   os_disk {
-    name              = "${var.name}-disk"
-    caching           = var.caching
-    storage_account_type     = var.storage_account_type
-    disk_size_gb = var.disk_size_gb
+    name                 = "${var.name}-osdisk"
+    caching              = var.caching
+    storage_account_type = var.storage_account_type
+    disk_size_gb         = var.disk_size_gb
   }
   depends_on = [
     azurerm_network_interface.nic
@@ -54,20 +49,18 @@ resource "azurerm_network_interface" "nic" {
   }
 }
 
-
 # Creates Network Security Group NSG for Virtual Machine
 resource "azurerm_network_security_group" "nsg" {
   name                = "${var.name}-nsg"
   location            = azurerm_linux_virtual_machine.vm.location
   resource_group_name = azurerm_linux_virtual_machine.vm.resource_group_name
-    lifecycle {
+  lifecycle {
     ignore_changes = [
       tags,
     ]
   }
 
 }
-
 
 # Creates Network Security Group Default Rules for Virtual Machine
 resource "azurerm_network_security_rule" "nsg_rules" {
@@ -114,7 +107,13 @@ resource "azurerm_backup_protected_vm" "backup_protected_vm" {
   depends_on = [
     azurerm_linux_virtual_machine.vm
   ]
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 }
+
 
 
 # Extention for startup ELK script
@@ -135,15 +134,16 @@ SETTINGS
 
 # Creates a random string password for vm default user
 resource "random_password" "password" {
-  length      = 12
-  lower       = true
-  min_lower   = 6
-  min_numeric = 2
-  min_special = 2
-  min_upper   = 2
-  numeric     = true
-  special     = true
-  upper       = true
+  length           = 12
+  lower            = true
+  min_lower        = 6
+  min_numeric      = 2
+  min_special      = 2
+  min_upper        = 2
+  numeric          = true
+  special          = true
+  upper            = true
+  override_special = "!#@"
 
 
 }

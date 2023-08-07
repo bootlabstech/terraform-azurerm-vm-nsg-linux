@@ -16,7 +16,7 @@ variable "location" {
 
 variable "size" {
   type        = string
-  description = "Specifies the size of the Virtual Machine based on number of core and RAM.Refer documentation for all options"
+  description = "Specifies the size of the Virtual Machine based on number of core and RAM.Refer documentation for all options (Example Standard D2as v5 = Standard_D2as_v5)"
 }
 
 variable "admin_username" {
@@ -46,7 +46,8 @@ variable "sku" {
 
 variable "storage_image_version" {
   type        = string
-  description = "Specifies the Operating System version on the OS Disk. View documentation for all options"
+  description = "Specifies the Operating System version on the OS Disk. View documentation for all options. Defaults to latest"
+  default = "latest"
 
 }
 
@@ -54,7 +55,7 @@ variable "storage_image_version" {
 # os_disk
 variable "caching" {
   type        = string
-  description = "Specifies the caching requirements for the Data {{.name}}. Possible values include None, ReadOnly and ReadWrite."
+  description = "Specifies the caching requirements for the os disk . Possible values include None, ReadOnly and ReadWrite."
   default     = "ReadWrite"
 }
 
@@ -122,15 +123,6 @@ variable "recovery_services_vault_name" {
   description = "name of the recover service vault"
 }
 variable "services_vault_resource_group_name" {
-  type        = string
-  description = "name of resource group where the recovery service vault reside in"
-}
-
-variable "plan_name" {
-  type        = string
-  description = "name of resource group where the recovery service vault reside in"
-}
-variable "product" {
   type        = string
   description = "name of resource group where the recovery service vault reside in"
 }
