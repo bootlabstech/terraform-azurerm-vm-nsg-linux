@@ -16,13 +16,17 @@ variable "location" {
 
 variable "size" {
   type        = string
-  description = "Specifies the size of the Virtual Machine based on number of core and RAM.Refer documentation for all options (Example Standard D2as v5 = Standard_D2as_v5)"
+  description = "Specifies the size of the Virtual Machine (Example Standard D2as v5 = Standard_D2as_v5) .Refer documentation for all options"
 }
 
 variable "admin_username" {
   type        = string
   description = "Specifies the name of the local administrator account."
-  default = "user01"
+}
+variable "disable_password_authentication" {
+  type        = bool
+  description = "Specifies the name of the local administrator account."
+  default     = false
 }
 
 
@@ -47,7 +51,7 @@ variable "sku" {
 variable "storage_image_version" {
   type        = string
   description = "Specifies the Operating System version on the OS Disk. View documentation for all options. Defaults to latest"
-  default = "latest"
+  default     = "latest"
 
 }
 
@@ -62,7 +66,7 @@ variable "caching" {
 variable "storage_account_type" {
   type        = string
   description = "The Type of Storage Account which should back this the Internal OS Disk. Possible values are Standard_LRS, StandardSSD_LRS, Premium_LRS, StandardSSD_ZRS and Premium_ZRS"
-  default = "Standard_LRS"
+  default     = "Standard_LRS"
 }
 
 variable "disk_size_gb" {
@@ -86,7 +90,7 @@ variable "subnet_id" {
 variable "private_ip_address_allocation" {
   type        = string
   description = "The allocation method used for the Private IP Address. Possible values are Dynamic and Static"
-  default = "Dynamic"
+  default     = "Dynamic"
 }
 
 # azurerm_network_security_rule
