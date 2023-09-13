@@ -107,11 +107,7 @@ resource "azurerm_backup_protected_vm" "backup_protected_vm" {
   depends_on = [
     azurerm_linux_virtual_machine.vm
   ]
-  lifecycle {
-    ignore_changes = [
-      tags,
-    ]
-  }
+
 }
 
 
