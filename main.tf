@@ -118,7 +118,7 @@ resource "azurerm_backup_protected_vm" "backup_protected_vm" {
 
 # Extention for startup ELK script
 resource "azurerm_virtual_machine_extension" "example" {
-  name                 = "elkscript"
+  name                 = "${var.name}-elkscript"
   virtual_machine_id   = azurerm_linux_virtual_machine.vm.id
   publisher            = "Microsoft.Azure.Extensions"
   type                 = "CustomScript"
@@ -152,7 +152,7 @@ resource "random_password" "password" {
 
 }
 # Creates a secret to store DB credentials 
-resource "azurerm_key_vault_secret" "sqlvm_password" {
+resource "azurerm_key_vault_secret" "vm_password" {
   name         = "${var.name}-vmpwd"
   value        = random_password.password.result
   key_vault_id = data.azurerm_key_vault.key_vault.id
