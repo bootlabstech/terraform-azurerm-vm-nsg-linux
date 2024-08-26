@@ -3,7 +3,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   name                            = var.name
   resource_group_name             = var.resource_group_name
   location                        = var.location
-  network_interface_ids           = [azurerm_network_interface.nic.id]
+  network_interface_ids           = [var.azurerm_network_interface_id]
   size                            = var.size
   admin_username                  = var.admin_username
   admin_password                  = random_password.password.result
@@ -22,9 +22,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
     storage_account_type = var.storage_account_type
     disk_size_gb         = var.disk_size_gb
   }
-  depends_on = [
-    azurerm_network_interface.nic
-  ]
+
   lifecycle {
     ignore_changes = [
       tags,
@@ -32,22 +30,22 @@ resource "azurerm_linux_virtual_machine" "vm" {
   }
 }
 
-# Creates Network Interface Card with private IP for Virtual Machine
-resource "azurerm_network_interface" "nic" {
-  name                = "${var.name}-nic"
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  ip_configuration {
-    name                          = var.ip_name
-    subnet_id                     = var.subnet_id
-    private_ip_address_allocation = var.private_ip_address_allocation
-  }
-  lifecycle {
-    ignore_changes = [
-      tags,
-    ]
-  }
-}
+# # Creates Network Interface Card with private IP for Virtual Machine
+# resource "azurerm_network_interface" "nic" {
+#   name                = "${var.name}-nic"
+#   location            = var.location
+#   resource_group_name = var.resource_group_name
+#   ip_configuration {
+#     name                          = var.ip_name
+#     subnet_id                     = var.subnet_id
+#     private_ip_address_allocation = var.private_ip_address_allocation
+#   }
+#   lifecycle {
+#     ignore_changes = [
+#       tags,
+#     ]
+#   }
+# }
 
 # Creates Network Security Group NSG for Virtual Machine
 resource "azurerm_network_security_group" "nsg" {
@@ -81,7 +79,7 @@ resource "azurerm_network_security_rule" "nsg_rules" {
 
 # Creates association (i.e) adds NSG to the NIC
 resource "azurerm_network_interface_security_group_association" "security_group_association" {
-  network_interface_id      = azurerm_network_interface.nic.id
+  network_interface_id      = var.azurerm_network_interface_id
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
