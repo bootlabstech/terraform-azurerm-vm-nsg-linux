@@ -15,7 +15,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   #   sku       = var.sku
   #   version   = var.storage_image_version
   # }
-
+  
   os_disk {
     name                 = "${var.name}-osdisk"
     caching              = var.caching
@@ -112,21 +112,21 @@ resource "azurerm_backup_protected_vm" "backup_protected_vm" {
 
 
 
-# Extention for startup ELK script
-resource "azurerm_virtual_machine_extension" "example" {
-  name                 = "${var.name}-elkscript"
-  virtual_machine_id   = azurerm_linux_virtual_machine.vm.id
-  publisher            = "Microsoft.Azure.Extensions"
-  type                 = "CustomScript"
-  type_handler_version = "2.0"
+# # Extention for startup ELK script
+# resource "azurerm_virtual_machine_extension" "example" {
+#   name                 = "${var.name}-elkscript"
+#   virtual_machine_id   = azurerm_linux_virtual_machine.vm.id
+#   publisher            = "Microsoft.Azure.Extensions"
+#   type                 = "CustomScript"
+#   type_handler_version = "2.0"
 
-  settings = <<SETTINGS
-    {
-      "fileUris": ["https://sharedsaelk.blob.core.windows.net/elk-startup-script/elkscript.sh"],
-      "commandToExecute": "sh elkscript.sh"
-    }
-SETTINGS
-}
+#   settings = <<SETTINGS
+#     {
+#       "fileUris": ["https://sharedsaelk.blob.core.windows.net/elk-startup-script/elkscript.sh"],
+#       "commandToExecute": "sh elkscript.sh"
+#     }
+# SETTINGS
+# }
 
 # Getting existing Keyvault name to store credentials as secrets
 data "azurerm_key_vault" "key_vault" {
@@ -153,5 +153,5 @@ resource "azurerm_key_vault_secret" "vm_password" {
   value        = random_password.password.result
   key_vault_id = data.azurerm_key_vault.key_vault.id
 
-  depends_on = [azurerm_virtual_machine_extension.example]
+  depends_on = [ azurerm_linux_virtual_machine.vm ]
 }
