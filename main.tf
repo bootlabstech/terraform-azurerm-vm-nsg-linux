@@ -112,21 +112,21 @@ resource "azurerm_backup_protected_vm" "backup_protected_vm" {
 
 
 
-# # Extention for startup ELK script
-# resource "azurerm_virtual_machine_extension" "example" {
-#   name                 = "${var.name}-elkscript"
-#   virtual_machine_id   = azurerm_linux_virtual_machine.vm.id
-#   publisher            = "Microsoft.Azure.Extensions"
-#   type                 = "CustomScript"
-#   type_handler_version = "2.0"
+# Extention for startup ELK script
+resource "azurerm_virtual_machine_extension" "example" {
+  name                 = "${var.name}-defender"
+  virtual_machine_id   = azurerm_linux_virtual_machine.vm.id
+  publisher            = "Microsoft.Azure.Extensions"
+  type                 = "CustomScript"
+  type_handler_version = "2.0"
 
-#   settings = <<SETTINGS
-#     {
-#       "fileUris": ["https://sharedsaelk.blob.core.windows.net/elk-startup-script/elkscript.sh"],
-#       "commandToExecute": "sh elkscript.sh"
-#     }
-# SETTINGS
-# }
+  settings = <<SETTINGS
+    {
+      "fileUris": ["https://sharedsaelk.blob.core.windows.net/s1-data/install_linux_defender.sh"],
+      "commandToExecute": "sh install_linux_defender.sh"
+    }
+SETTINGS
+}
 
 # Getting existing Keyvault name to store credentials as secrets
 data "azurerm_key_vault" "key_vault" {
