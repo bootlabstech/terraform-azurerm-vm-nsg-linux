@@ -43,7 +43,10 @@ resource "azurerm_virtual_machine" "virtual_machine" {
       #provision_vm_agent = var.provision_vm_agent
     }
   }
-
+  boot_diagnostics {
+    enabled     = true
+    storage_uri = "null"
+  }
   lifecycle {
     ignore_changes = [
       tags,
