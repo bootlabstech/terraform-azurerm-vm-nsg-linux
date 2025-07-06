@@ -9,13 +9,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
   admin_password                  = random_password.password.result
   disable_password_authentication = var.disable_password_authentication
   source_image_id                 = var.source_image_id
-  # source_image_reference {
-  #   publisher = var.publisher
-  #   offer     = var.offer
-  #   sku       = var.sku
-  #   version   = var.storage_image_version
-  # }
-  
+  identity {type = var.identity}
   os_disk {
     name                 = "${var.name}-osdisk"
     caching              = var.caching
@@ -29,11 +23,9 @@ resource "azurerm_linux_virtual_machine" "vm" {
     ignore_changes = [
       tags,
       boot_diagnostics
+      
     ]
   }
-
-  identity {type = var.identity}
-
 }
 
 # Creates Network Interface Card with private IP for Virtual Machine

@@ -28,37 +28,23 @@ variable "disable_password_authentication" {
   description = "Specifies the name of the local administrator account."
   default     = false
 }
-
-
-# # source_image_reference
-# variable "publisher" {
-#   type        = string
-#   description = "Specifies the Publisher of the Marketplace Image this Virtual Machine should be created from.View documentation for all options"
-#   default     = "Canonical"
-# }
-
-# variable "offer" {
-#   type        = string
-#   description = " Specifies the offer of the image used to create the virtual machines.View documentation for all options "
-# }
-
-# variable "storage_image_version" {
-#   type        = string
-#   description = "Specifies the Operating System version on the OS Disk. View documentation for all options. Defaults to latest"
-#   default     = "latest"
-# }
-
-variable "source_image_id" {
-  type        = string
-  description = "Specifies the SKU of the image used to create the virtual machines.View documentation for all options"
-
-}
 variable "identity" {
   type = string
   description = "The managed identity"
   default = "SystemAssigned"
   
 }
+
+
+
+variable "source_image_id" {
+  type        = string
+  description = "Specifies the SKU of the image used to create the virtual machines.View documentation for all options"
+
+}
+
+
+
 
 # os_disk
 variable "caching" {
@@ -124,6 +110,7 @@ variable "nsg_rules" {
     }
   }
 }
+
 
 # azurerm_recovery_services_vault
 variable "recovery_services_vault_name" {
