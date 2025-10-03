@@ -126,4 +126,4 @@ variable "keyvault_name" {
   description = "The Keyvault name where VM password will be stored in"
   type = string
   
-}
+} 
