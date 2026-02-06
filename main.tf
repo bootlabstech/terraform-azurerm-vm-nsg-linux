@@ -27,7 +27,11 @@ resource "azurerm_linux_virtual_machine" "vm" {
     ]
   }
 }
-
+resource "azurerm_disk_access" "azurerm_disk_access" {
+  name                = "${var.name}-diskacc"
+  resource_group_name = var.resource_group_name
+  location            = var.location
+}
 # Creates Network Interface Card with private IP for Virtual Machine
 resource "azurerm_network_interface" "nic" {
   name                = "${var.name}-nic"
