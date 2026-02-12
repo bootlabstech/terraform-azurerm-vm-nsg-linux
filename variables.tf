@@ -119,3 +119,15 @@ variable "keyvault_name" {
   type = string
   
 } 
+variable "secure_boot_enabled" {
+  description = "The Keyvault name where VM password will be stored in"
+  type = bool
+  default = true
+  
+}
+variable "vtpm_enabled" {
+  description = "The Keyvault name where VM password will be stored in"
+  type = bool
+  default = true
+  
+}

@@ -9,6 +9,8 @@ resource "azurerm_linux_virtual_machine" "vm" {
   admin_password                  = random_password.password.result
   disable_password_authentication = var.disable_password_authentication
   source_image_id                 = var.source_image_id
+  secure_boot_enabled = var.secure_boot_enabled
+  vtpm_enabled = var.vtpm_enabled
   identity {type = var.identity}
   os_disk {
     name                 = "${var.name}-osdisk"
