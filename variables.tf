@@ -28,23 +28,37 @@ variable "disable_password_authentication" {
   description = "Specifies the name of the local administrator account."
   default     = false
 }
-variable "identity" {
-  type = string
-  description = "The managed identity"
-  default = "SystemAssigned"
-  
-}
 
 
+# # source_image_reference
+# variable "publisher" {
+#   type        = string
+#   description = "Specifies the Publisher of the Marketplace Image this Virtual Machine should be created from.View documentation for all options"
+#   default     = "Canonical"
+# }
+
+# variable "offer" {
+#   type        = string
+#   description = " Specifies the offer of the image used to create the virtual machines.View documentation for all options "
+# }
+
+# variable "storage_image_version" {
+#   type        = string
+#   description = "Specifies the Operating System version on the OS Disk. View documentation for all options. Defaults to latest"
+#   default     = "latest"
+# }
 
 variable "source_image_id" {
   type        = string
   description = "Specifies the SKU of the image used to create the virtual machines.View documentation for all options"
 
 }
-
-
-
+variable "identity" {
+  type = string
+  description = "The managed identity"
+  default = "SystemAssigned"
+  
+}
 
 # os_disk
 variable "caching" {
@@ -111,23 +125,18 @@ variable "nsg_rules" {
   }
 }
 
-
-
+# azurerm_recovery_services_vault
+# variable "recovery_services_vault_name" {
+#   type        = string
+#   description = "name of the recover service vault"
+# }
+# variable "services_vault_resource_group_name" {
+#   type        = string
+#   description = "name of resource group where the recovery service vault reside in"
+# }
 
 variable "keyvault_name" {
   description = "The Keyvault name where VM password will be stored in"
   type = string
-  
-} 
-variable "secure_boot_enabled" {
-  description = "The Keyvault name where VM password will be stored in"
-  type = bool
-  default = true
-  
-}
-variable "vtpm_enabled" {
-  description = "The Keyvault name where VM password will be stored in"
-  type = bool
-  default = true
   
 }
