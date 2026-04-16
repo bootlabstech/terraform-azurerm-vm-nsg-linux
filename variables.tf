@@ -28,37 +28,23 @@ variable "disable_password_authentication" {
   description = "Specifies the name of the local administrator account."
   default     = false
 }
-
-
-# # source_image_reference
-# variable "publisher" {
-#   type        = string
-#   description = "Specifies the Publisher of the Marketplace Image this Virtual Machine should be created from.View documentation for all options"
-#   default     = "Canonical"
-# }
-
-# variable "offer" {
-#   type        = string
-#   description = " Specifies the offer of the image used to create the virtual machines.View documentation for all options "
-# }
-
-# variable "storage_image_version" {
-#   type        = string
-#   description = "Specifies the Operating System version on the OS Disk. View documentation for all options. Defaults to latest"
-#   default     = "latest"
-# }
-
-variable "source_image_id" {
-  type        = string
-  description = "Specifies the SKU of the image used to create the virtual machines.View documentation for all options"
-
-}
 variable "identity" {
   type = string
   description = "The managed identity"
   default = "SystemAssigned"
   
 }
+
+
+
+variable "source_image_id" {
+  type        = string
+  description = "Specifies the SKU of the image used to create the virtual machines.View documentation for all options"
+
+}
+
+
+
 
 # os_disk
 variable "caching" {
@@ -125,18 +111,33 @@ variable "nsg_rules" {
   }
 }
 
-# azurerm_recovery_services_vault
-# variable "recovery_services_vault_name" {
-#   type        = string
-#   description = "name of the recover service vault"
-# }
-# variable "services_vault_resource_group_name" {
-#   type        = string
-#   description = "name of resource group where the recovery service vault reside in"
-# }
+
+
 
 variable "keyvault_name" {
   description = "The Keyvault name where VM password will be stored in"
   type = string
   
+} 
+variable "publisher" {
+  type        = string
+  description = " Specifies the publisher of the image used to create the virtual machine. Examples: Canonical, MicrosoftWindowsServer"
+  default = "Canonical"
+}
+variable "storage_image_version" {
+  type        = string
+  description = "Specifies the version of the image used to create the virtual machine. Changing this forces a new resource to be created."
+   default     = "latest"
+}
+
+variable "offer" {
+  type        = string
+  description = "Specifies the offer of the image used to create the virtual machine. Examples: UbuntuServer, WindowsServer"
+  default = "0001-com-ubuntu-server-jammy"
+}
+
+variable "sku" {
+  type        = string
+  default       = "22_04-lts"
+  description = "Specifies the SKU of the image used to create the virtual machine. Examples: 18.04-LTS, 2019-Datacenter"
 }
