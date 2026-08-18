@@ -82,8 +82,33 @@ resource "azurerm_network_interface_security_group_association" "security_group_
   network_security_group_id = azurerm_network_security_group.nsg.id
 }
 
+# Getting existing recovery_services_vault to add vm as a backup item 
+data "azurerm_recovery_services_vault" "services_vault" {
+  count               = lower(var.environment) == "prod" ? 0 : 1
+  name                = var.recovery_services_vault_name
+  resource_group_name = var.services_vault_resource_group_name
+}
 
+# Getting existing Backup Policy for Virtual Machine
+data "azurerm_backup_policy_vm" "policy" {
+  count               = lower(var.environment) == "prod" ? 0 : 1
+  name                = "EnhancedPolicy"
+  recovery_vault_name = data.azurerm_recovery_services_vault.services_vault[0].name
+  resource_group_name = data.azurerm_recovery_services_vault.services_vault[0].resource_group_name
+}
 
+# Creates Backup protected Virtual Machine
+resource "azurerm_backup_protected_vm" "backup_protected_vm" {
+  count               = lower(var.environment) == "prod" ? 0 : 1
+  resource_group_name = data.azurerm_recovery_services_vault.services_vault[0].resource_group_name
+  recovery_vault_name = data.azurerm_recovery_services_vault.services_vault[0].name
+  source_vm_id        = azurerm_linux_virtual_machine.vm.id
+  backup_policy_id    = data.azurerm_backup_policy_vm.policy[0].id
+
+  depends_on = [
+    azurerm_linux_virtual_machine.vm
+  ]
+}
 
 
 # Extention for startup ELK script
